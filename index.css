@@ -44,4 +44,17 @@
 .btn {
     margin: 10px;
 }
-
+.shimmer {
+    width: 200px;
+    height: 300px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #f0f0f0;
+}
+.shimmer-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.btn {
+    padding: 10px;
+}
