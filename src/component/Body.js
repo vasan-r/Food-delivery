@@ -4,6 +4,9 @@ import Shimmer from "./Shimmer";
 
 const Body = () => {
   const [ListofRestaruant, setListofRestaruant] = useState([]);
+  const [FilterListofRestaruant,setFilterListofRestaruant] = useState([]);
+  const [SearchText, setSearchText] = useState("");
+  console.log("body rendered");
   useEffect(() => {
     fetchDate();
   }, []);
@@ -16,26 +19,48 @@ const Body = () => {
     const obj =
       json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants;
     setListofRestaruant(obj);
+    setFilterListofRestaruant(obj);
   };
   const filterTopRatedRestaurants = () => {
     const filteredList = ListofRestaruant.filter(
       (res) => res.info.avgRating > 4.3
     );
-    setListofRestaruant(filteredList);
+    setFilterListofRestaruant(filteredList);
   };
-  if(ListofRestaruant.length === 0){
+  if (ListofRestaruant.length === 0) {
     return <Shimmer />;
   }
 
   return (
     <div className="body-container">
-      <div className="btn">
-        <button onClick={filterTopRatedRestaurants}>
+      <div className="filter">
+        <div className="search-container">
+          <input
+            type="text"
+            className="search-box"
+            value={SearchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+          ></input>
+          <button
+            className="search-btn"
+            onClick={() => {
+              const filterRes = ListofRestaruant.filter((res) =>
+                res.info.name.toLowerCase().includes(SearchText.toLowerCase())
+              );
+              setFilterListofRestaruant(filterRes);
+            }}
+          >
+            search
+          </button>
+        </div>
+        <button className="filter-btn" onClick={filterTopRatedRestaurants}>
           Top Rated Restaurants
         </button>
       </div>
       <div className="cart-container">
-        {ListofRestaruant.map((restaurant) => (
+        {FilterListofRestaruant.map((restaurant) => (
           <Cart key={restaurant.info.id} resData={restaurant} />
         ))}
       </div>
